@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Books | Book Barter System</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .books-list { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 32px; }
+    .book-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      padding: 18px 16px;
+      width: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .book-card h3 { margin: 0 0 10px 0; color: #4a90e2; }
+    .book-card p { margin: 6px 0; color: #444; }
+    .book-card .genre { font-size: 0.95em; color: #888; }
+    .filter-form { display: flex; gap: 12px; margin: 32px 0 0 0; }
+    .filter-form input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+    .filter-form button { padding: 8px 16px; border: none; background: #4a90e2; color: #fff; border-radius: 4px; cursor: pointer; }
+    .filter-form button:hover { background: #357ab8; }
+    @media (max-width: 700px) {
+      .books-list { flex-direction: column; align-items: center; }
+      .book-card { width: 95%; }
+      .filter-form { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <!-- Navigation -->
+    <nav>
+      <div class="container">
+        <a href="/" class="logo">Book Barter</a>
+        <div class="nav-menu">
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/books" class="active">Browse Books</a></li>
+            <li><a href="#">Book Barter Library</a></li>
+            <li><a href="login.html" class="btn btn-outline">Login/Register</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="hero-banner">
+      <img src="first.jpg" alt="Book collection">
+      <div class="hero-overlay">
+        <h1>Browse Books</h1>
+        <p>Find your next great read or swap!</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <!-- Filter/Search Form -->
+      <form id="filterForm" class="filter-form">
+        <input type="text" id="titleInput" placeholder="Title">
+        <input type="text" id="authorInput" placeholder="Author">
+        <input type="text" id="genreInput" placeholder="Genre">
+        <button type="submit">Search</button>
+        <button type="button" id="clearBtn">Clear</button>
+      </form>
+
+      <!-- Books List -->
+      <div id="booksList" class="books-list"></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <h3>Book Barter</h3>
+          <p>Connecting readers and sharing stories since 2023.</p>
+        </div>
+        <div class="footer-column">
+          <h4>Categories</h4>
+          <ul class="footer-links">
+            <li><a href="/books.html?genre=Mystery">Mystery</a></li>
+            <li><a href="/books.html?genre=Fiction">Fiction</a></li>
+            <li><a href="/books.html?genre=Crime">Crime</a></li>
+            <li><a href="/books.html">View All</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Contact Us</h4>
+          <ul class="footer-contact">
+            <li>Email: info@bookbarter.com</li>
+            <li>Phone: (123) 456-7890</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Book Barter System. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Helper to get query params from URL
+    function getQueryParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name) || '';
+    }
+
+    // Populate filter fields from URL (for genre links)
+    document.getElementById('genreInput').value = getQueryParam('genre');
+
+    // Fetch and display books
+    function fetchBooks(filters = {}) {
+      let url = '/api/books';
+      const params = [];
+      if (filters.title) params.push('title=' + encodeURIComponent(filters.title));
+      if (filters.author) params.push('author=' + encodeURIComponent(filters.author));
+      if (filters.genre) params.push('genre=' + encodeURIComponent(filters.genre));
+      if (params.length) url += '?' + params.join('&');
+
+      fetch(url)
+        .then(res => res.json())
+        .then(books => displayBooks(books))
+        .catch(() => {
+          document.getElementById('booksList').innerHTML = '<p>Could not load books.</p>';
+        });
+    }
+
+    function displayBooks(books) {
+      const booksList = document.getElementById('booksList');
+      booksList.innerHTML = '';
+      if (!books.length) {
+        booksList.innerHTML = '<p>No books found.</p>';
+        return;
+      }
+      books.forEach(book => {
+        const div = document.createElement('div');
+        div.className = 'book-card';
+        div.innerHTML = `
+          <h3>${book.title}</h3>
+          <p><strong>Author:</strong> ${book.author}</p>
+          <p class="genre"><strong>Genre:</strong> ${book.genre}</p>
+          ${book.owner ? `<p><strong>Owner:</strong> ${book.owner}</p>` : ''}
+        `;
+        booksList.appendChild(div);
+      });
+    }
+
+    // Handle form submit for filtering
+    document.getElementById('filterForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      fetchBooks({
+        title: document.getElementById('titleInput').value.trim(),
+        author: document.getElementById('authorInput').value.trim(),
+        genre: document.getElementById('genreInput').value.trim()
+      });
+    });
+
+    // Handle clear button
+    document.getElementById('clearBtn').addEventListener('click', function() {
+      document.getElementById('titleInput').value = '';
+      document.getElementById('authorInput').value = '';
+      document.getElementById('genreInput').value = '';
+      window.history.replaceState({}, document.title, '/books');
+      fetchBooks();
+    });
+
+    // Initial fetch (with genre from URL if present)
+    fetchBooks({
+      genre: getQueryParam('genre')
+    });
+  </script>
+</body>
+</html>

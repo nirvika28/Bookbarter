@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About | BookSwap</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f7f7fa;
+      margin: 0;
+      padding: 0;
+    }
+    .about-container {
+      max-width: 700px;
+      margin: 60px auto 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 40px 32px;
+      text-align: center;
+    }
+    .about-container h1 {
+      color: #4a90e2;
+      margin-bottom: 16px;
+      font-size: 2.5rem;
+    }
+    .about-container p {
+      color: #333;
+      font-size: 1.15rem;
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+    .about-container a {
+      color: #4a90e2;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .about-container a:hover {
+      text-decoration: underline;
+    }
+    .testimonials-section {
+  margin-top: 48px;
+  background: #f0f6ff;
+  border-radius: 10px;
+  padding: 32px 20px;
+  box-shadow: 0 2px 12px rgba(74,144,226,0.07);
+}
+.testimonials-section h2 {
+  text-align: center;
+  color: #4a90e2;
+  margin-bottom: 28px;
+  font-size: 1.7rem;
+  letter-spacing: 1px;
+}
+.testimonials-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+}
+.testimonial {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 29px 18px;
+  max-width: 320px;
+  min-width: 220px;
+  flex: 1 1 220px;
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.testimonial-text {
+  font-style: italic;
+  color: #333;
+  margin-bottom: 18px;
+  text-align: center;
+}
+.testimonial-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.testimonial-user img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid #4a90e2;
+}
+.user-name {
+  font-weight: 600;
+  color: #4a90e2;
+  font-size: 1rem;
+}
+@media (max-width: 700px) {
+  .testimonials-list {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+    @media (max-width: 600px) {
+      .about-container {
+        padding: 24px 8px;
+      }
+      .about-container h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="about-container">
+    <h1>About BookSwap</h1>
+    <p>
+      <strong>BookSwap</strong> is a community-driven platform that connects book lovers and enables them to exchange books easily and securely.
+      <br><br>
+      Our mission is to promote reading, sharing, and sustainability by making book swapping simple, fun, and accessible to everyone.
+    </p>
+    <p>
+      Developed with ❤️  <strong></strong>.<br>
+      For questions or feedback, visit our <a href="contact.html">Contact page</a>.
+    </p>
+  </div>
+  <div class="testimonials-section">
+    <h2>What Our Users Say</h2>
+    <div class="testimonials-list">
+      <div class="testimonial">
+        <p class="testimonial-text">"BookSwap made it so easy to find new reads and share my favorites. I love the community!"</p>
+        <div class="testimonial-user">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User photo">
+          <span class="user-name">Priya S.</span>
+        </div>
+      </div>
+      <div class="testimonial">
+        <p class="testimonial-text">"I swapped three books in my first week! The process is smooth and fun."</p>
+        <div class="testimonial-user">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User photo">
+          <span class="user-name">Rahul M.</span>
+        </div>
+      </div>
+      <div class="testimonial">
+        <p class="testimonial-text">"A fantastic way to connect with fellow book lovers and discover hidden gems."</p>
+        <div class="testimonial-user">
+          <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="User photo">
+          <span class="user-name">Ananya T.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</body>
+</html>

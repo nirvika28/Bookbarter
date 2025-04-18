@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" type="text/css" href="styles1.css">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="main">
+    <form id="loginForm">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <script>
+   
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault(); 
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      fetch("http://localhost:5001/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+      localStorage.setItem("loggedInUser", data.user.email);
+      localStorage.setItem("userId", data.user.id); // or data.user._id
+      localStorage.setItem("token", data.token);    // <-- Store the token!
+      window.location.href = "dash.html";
+    } else {
+      alert(data.message);
+    }
+  })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("An error occurred while logging in. Please try again.");
+        });
+    });
+   
+  </script>
+</body>
+</html>

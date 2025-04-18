@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookSwap - Dashboard</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --secondary: #f43f5e;
+      --secondary-hover: #e11d48;
+      --text-dark: #1f2937;
+      --text-light: #6b7280;
+      --bg-light: #f9fafb;
+      --bg-white: #ffffff;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --radius: 8px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header & Navigation */
+    header {
+      background-color: var(--bg-white);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .user-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    /* Notification System */
+    .notification-bell {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .notification-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: var(--secondary);
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .notifications-panel {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 300px;
+      background-color: var(--bg-white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1rem;
+      display: none;
+      max-height: 400px;
+      overflow-y: auto;
+      z-index: 101;
+    }
+
+    .notifications-panel.active {
+      display: block;
+    }
+
+    .notification-item {
+      padding: 0.75rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .notification-item:last-child {
+      border-bottom: none;
+    }
+
+    .notification-item p {
+      margin: 0;
+      font-size: 0.875rem;
+    }
+
+    /* Main Content */
+    main {
+      padding: 2rem 0;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background-color: var(--bg-white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    /* Chat Section */
+    .chat-section {
+      grid-column: span 2;
+    }
+
+    @media (max-width: 768px) {
+      .chat-section {
+        grid-column: span 1;
+      }
+    }
+
+    .chat-container {
+      height: 400px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    /* Book Listings */
+    .book-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .book-item {
+      background-color: var(--bg-light);
+      border-radius: var(--radius);
+      padding: 1rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .book-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .book-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .book-author {
+      color: var(--text-light);
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .book-genre {
+      display: inline-block;
+      background-color: #e5e7eb;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      color: var(--text-dark);
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: var(--radius);
+      font-family: inherit;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--radius);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--secondary);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--secondary-hover);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid #d1d5db;
+      color: var(--text-dark);
+    }
+
+    .btn-outline:hover {
+      background-color: #f3f4f6;
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    /* Utilities */
+    .text-center {
+      text-align: center;
+    }
+
+    .mt-4 {
+      margin-top: 1rem;
+    }
+
+    .welcome-message {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .welcome-subtitle {
+      color: var(--text-light);
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="#" class="logo">BookSwap</a> 
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+
+        <ul class="nav-links">
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="exchange.html">Exchange Proposals</a></li>
+          <li><a href="#">My Books</a></li>
+          <li><a href="#">Browse</a></li>
+        </ul>
+        <div class="user-actions">
+          <div class="notification-bell" id="notification-bell">
+            <i class="fas fa-bell"></i>
+            <span class="notification-count" id="notification-count">0</span>
+            <div class="notifications-panel" id="notifications-panel">
+              <h3>Notifications</h3>
+              <div id="notifications"></div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="welcome-message" id="welcomeText">Welcome!</div>
+    <p class="welcome-subtitle">Manage your book listings, view exchange proposals, and connect with other readers.</p>
+
+    <div class="dashboard-grid">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Your Book Listings</h2>
+          <button class="btn btn-primary btn-sm" id="add-book-toggle">
+            <i class="fas fa-plus"></i> Add Book
+          </button>
+        </div>
+        
+        <div id="add-book-form" style="display: none;">
+          <form id="addBookForm">
+            <!-- User ID (Visible Field) -->
+            <div class="form-group">
+              <label for="userid" class="form-label">User ID</label>
+              <input type="text" id="userid" class="form-control" placeholder="Enter your User ID" required>
+            </div>
+        
+            <!-- Book Title -->
+            <div class="form-group">
+              <label for="bookTitle" class="form-label">Book Title</label>
+              <input type="text" id="bookTitle" class="form-control" placeholder="Enter book title" required>
+            </div>
+        
+            <!-- Author -->
+            <div class="form-group">
+              <label for="bookAuthor" class="form-label">Author</label>
+              <input type="text" id="bookAuthor" class="form-control" placeholder="Enter author name" required>
+            </div>
+        
+            <!-- Genre -->
+            <div class="form-group">
+              <label for="bookGenre" class="form-label">Genre</label>
+              <select id="bookGenre" class="form-control" required>
+                <option value="">Select a genre</option>
+                <option value="Fiction">Fiction</option>
+                <option value="Non-Fiction">Non-Fiction</option>
+                <option value="Science Fiction">Science Fiction</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Mystery">Mystery</option>
+                <option value="Romance">Romance</option>
+                <option value="Thriller">Thriller</option>
+                <option value="Biography">Biography</option>
+                <option value="History">History</option>
+                <option value="Self-Help">Self-Help</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+        
+            <!-- Buttons -->
+            <button type="submit" class="btn btn-primary">Add Book</button>
+            <button type="button" class="btn btn-outline" id="cancel-add-book">Cancel</button>
+          </form>
+        </div>
+        
+        <div id="books-container" class="book-list">
+          <!-- User's books will be loaded here -->
+          <div class="text-center">Loading your books...</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">All Book Listings</h2>
+          <div>
+            <input type="text" id="search-books" class="form-control" placeholder="Search books..." style="display: inline-block; width: auto;">
+          </div>
+        </div>
+        <div id="allBooksContainer" class="book-list">
+          <!-- All books will be loaded here -->
+          <div class="text-center">Loading books...</div>
+        </div>
+      </div>
+
+      
+      <div class="card chat-section">
+        <div class="card-header">
+          <h2 class="card-title">Exchange Proposals</h2>
+          <a href="exchange.html" class="btn btn-outline btn-sm">
+            <i class="fas fa-external-link-alt"></i> View All Proposals
+          </a>
+        </div>
+        <div id="proposals-container">
+          <div class="text-center">Loading exchange proposals...</div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+        <div class="chat-container">
+          <iframe src="http://localhost:3002" width="100%" height="100%" style="border: none;"></iframe>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+  <script>
+   // DOM Elements
+const welcomeText = document.getElementById('welcomeText');
+const booksContainer = document.getElementById('books-container');
+const allBooksContainer = document.getElementById('allBooksContainer');
+const addBookForm = document.getElementById('addBookForm');
+const addBookToggle = document.getElementById('add-book-toggle');
+const cancelAddBook = document.getElementById('cancel-add-book');
+const addBookFormContainer = document.getElementById('add-book-form');
+const notificationBell = document.getElementById('notification-bell');
+const notificationsPanel = document.getElementById('notifications-panel');
+const notificationCount = document.getElementById('notification-count');
+const notifications = document.getElementById('notifications');
+const searchBooks = document.getElementById('search-books');
+
+// Check if user is logged in
+const email = localStorage.getItem("loggedInUser");
+const userId = localStorage.getItem("userId");
+
+if (!email ) {
+  alert("You are not logged in!");
+  window.location.href = "login.html";
+} else {
+  welcomeText.textContent = `Welcome, ${email}!`;
+}
+
+// Toggle add book form
+addBookToggle.addEventListener('click', () => {
+  addBookFormContainer.style.display = 'block';
+});
+
+cancelAddBook.addEventListener('click', () => {
+  addBookFormContainer.style.display = 'none';
+  addBookForm.reset();
+});
+
+// Notification handling
+notificationBell.addEventListener('click', () => {
+  notificationsPanel.classList.toggle('active');
+});
+
+document.addEventListener('click', (event) => {
+  if (!notificationBell.contains(event.target) && notificationsPanel.classList.contains('active')) {
+    notificationsPanel.classList.remove('active');
+  }
+});
+
+// Socket.io for real-time notifications
+const socket = io('http://localhost:5001');
+socket.on('notification', (data) => {
+  notificationCount.textContent = parseInt(notificationCount.textContent) + 1;
+  const notificationItem = document.createElement('div');
+  notificationItem.className = 'notification-item';
+  notificationItem.innerHTML = `
+    <p>${data.message}</p>
+    <small>${new Date().toLocaleTimeString()}</small>
+  `;
+  notifications.appendChild(notificationItem);
+});
+
+// Fetch and display user's books
+  // Fetch and display user's books
+  // Updated to handle both array and object responses
+function fetchUserBooks(userId) {
+  booksContainer.innerHTML = '<div class="text-center">Loading your books...</div>';
+
+  fetch(`http://localhost:5001/api/books?userId=${userId}`)
+    .then(response => {
+      if (!response.ok) throw new Error('Failed to fetch user books');
+      return response.json();
+    })
+    .then(data => {
+      console.log('Response from /api/books?userId:', data);
+      booksContainer.innerHTML = '';
+      
+      // FIX 1: Handle both array and object responses
+      const books = data.books || data || [];
+      
+      if (books.length === 0) {
+        booksContainer.innerHTML = '<div class="text-center">No books found for this user!</div>';
+      } else {
+        books.forEach(book => {
+          const bookItem = document.createElement('div');
+          bookItem.className = 'book-item';
+          bookItem.innerHTML = `
+            <h3 class="book-title">${book.title}</h3>
+            <p class="book-author">${book.author}</p>
+            <span class="book-genre">${book.genre}</span>
+          `;
+          booksContainer.appendChild(bookItem);
+        });
+      }
+    })
+    .catch(error => {
+      booksContainer.innerHTML = `<div class="text-center text-error">${error.message}</div>`;
+    });
+}
+
+// Updated with proper error handling
+function fetchAllBooks() {
+  allBooksContainer.innerHTML = '<div class="text-center">Loading books...</div>';
+
+  fetch('http://localhost:5001/api/books')
+    .then(response => {
+      if (!response.ok) throw new Error('Failed to fetch all books');
+      return response.json();
+    })
+    .then(data => {
+      console.log('Response from /api/books (all):', data);
+      allBooksContainer.innerHTML = '';
+      
+      // FIX 2: Handle different response formats
+      const books = data.books || data || [];
+      
+      if (books.length === 0) {
+        allBooksContainer.innerHTML = '<div class="text-center">No books available!</div>';
+      } else {
+        books.forEach(book => {
+          const bookItem = document.createElement('div');
+          bookItem.className = 'book-item';
+          bookItem.innerHTML = `
+            <h3 class="book-title">${book.title}</h3>
+            <p class="book-author">${book.author}</p>
+            <span class="book-genre">${book.genre}</span>
+          `;
+          allBooksContainer.appendChild(bookItem);
+        });
+      }
+    })
+    .catch(error => {
+      allBooksContainer.innerHTML = `<div class="text-center text-error">${error.message}</div>`;
+    });
+}
+
+// FIX 3: Proper initialization with null checks
+document.addEventListener('DOMContentLoaded', () => {
+  // Check if elements exist before using them
+  if (welcomeText) {
+    welcomeText.textContent = `Welcome, ${email}!`;
+  }
+  
+  if (userId) {
+    fetchUserBooks(userId);
+    fetchAllBooks();
+  }
+});
+
+
+
+  document.getElementById("addBookForm").addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const userId = document.getElementById("userid").value; // Corrected ID
+    const title = document.getElementById("bookTitle").value; // Corrected ID
+    const author = document.getElementById("bookAuthor").value; // Corrected ID
+    const genre = document.getElementById("bookGenre").value; // Corrected ID
+
+    const bookData = {
+      userId: userId,
+      title: title,
+      author: author,
+      genre: genre
+    };
+
+    try {
+      const response = await fetch("http://localhost:5001/api/books", {
+        method: "POST",
+        headers: {
+  "Content-Type": "application/json",
+  "Authorization": `Bearer ${localStorage.getItem("token")}`
+}
+,
+        body: JSON.stringify(bookData)
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert("Book added successfully!");
+        document.getElementById("addBookForm").reset();
+        // Refresh book lists after adding
+        fetchUserBooks(userId);
+        fetchAllBooks(); // Ensure this is being called
+
+        // Optional: Add a small delay before refetching all books
+        // setTimeout(fetchAllBooks, 500);
+
+      } else {
+        alert("Error: " + result.message);
+      }
+    } catch (error) {
+      console.error("Error adding book:", error);
+      alert("Something went wrong. Please try again.");
+    }
+  });
+// Search functionality
+searchBooks.addEventListener('input', function() {
+  const searchTerm = this.value.toLowerCase();
+  const bookItems = allBooksContainer.querySelectorAll('.book-item');
+  
+  bookItems.forEach(item => {
+    const title = item.querySelector('.book-title').textContent.toLowerCase();
+    const author = item.querySelector('.book-author').textContent.toLowerCase();
+    const genre = item.querySelector('.book-genre').textContent.toLowerCase();
+    
+    if (title.includes(searchTerm) || author.includes(searchTerm) || genre.includes(searchTerm)) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+});
+
+// Logout function
+function logout() {
+  localStorage.clear();
+  window.location.href = 'login.html';
+}
+
+// Initialize
+fetchUserBooks();
+fetchAllBooks();
+  </script>
+</body>
+</html>

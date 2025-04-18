@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Barter System</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <!-- Navigation -->
+    <nav>
+      <div class="container">
+        <a href="#" class="logo">Book Barter</a>
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-button">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        <!-- Desktop Navigation -->
+        <div class="nav-menu">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="books.html">Browse Books</a></li>
+            <li><a href="#">Book Barter Library</a></li>
+            <li><a href="login.html" class="btn btn-outline">Login/Register</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+      <img src="first.jpg" alt="Book collection">
+      <div class="hero-overlay">
+        <h1>Book Barter System</h1>
+        <p>Discover, share, and connect through the love of reading</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Search Section -->
+    <section class="search-section">
+      <div class="container search-container">
+        <h2>Search Books</h2>
+        <div class="search-box">
+          <input type="text" class="search-input" placeholder="Search by title, author, or genre...">
+          <button class="search-button">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Book Categories -->
+    <section class="categories-section">
+      <div class="container">
+        <h2>Popular Categories</h2>
+        <div class="categories-grid">
+          <!-- Mystery Category -->
+          <a href="/books.html?genre=Mystery" class="category-card" style="text-decoration:none; color:inherit;">
+            <div class="category-image">
+              <img src="mystery.jpg" alt="Mystery Books">
+            </div>
+            <div class="category-content">
+              <h3>Mystery</h3>
+              <p>Explore thrilling mysteries and detective stories</p>
+            </div>
+          </a>
+          <!-- Fiction Category -->
+          <a href="/books.html?genre=Fiction" class="category-card" style="text-decoration:none; color:inherit;">
+            <div class="category-image">
+              <img src="fiction.jpg" alt="Fiction Books">
+            </div>
+            <div class="category-content">
+              <h3>Fiction</h3>
+              <p>Discover captivating stories and imaginary worlds</p>
+            </div>
+          </a>
+          <!-- Crime Category -->
+          <a href="/books.html?genre=Crime" class="category-card" style="text-decoration:none; color:inherit;">
+            <div class="category-image">
+              <img src="crime1.jpg" alt="Crime Books">
+            </div>
+            <div class="category-content">
+              <h3>Crime</h3>
+              <p>Unravel intriguing crime stories and investigations</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Discover Section -->
+    <section class="discover-section">
+      <div class="container">
+        <div class="discover-container">
+          <div class="discover-content">
+            <h2>Discover, Share, Connect</h2>
+            <p>Barter books with us and uncover a world of endless stories. Share your passion for reading, connect with fellow book lovers, and find the next adventure waiting for you.</p>
+            <a href="#" class="btn btn-primary btn-lg">Join Our Community</a>
+          </div>
+          <div class="discover-image">
+            <img src="bac3.jpg" alt="Book Barter Illustration">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What We Offer -->
+    <section class="offer-section">
+      <div class="container">
+        <h2>What We Offer</h2>
+        <div class="offer-grid">
+          <!-- Offer Card 1 -->
+          <div class="offer-card">
+            <div class="offer-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <h3>Wide Collection of Books</h3>
+            <p>Explore a vast array of books across genres like mystery, fiction, crime, and more.</p>
+          </div>
+          <!-- Offer Card 2 -->
+          <div class="offer-card">
+            <div class="offer-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+            </div>
+            <h3>Easy Barter System</h3>
+            <p>Swap your books seamlessly with others in the community.</p>
+          </div>
+          <!-- Offer Card 3 -->
+          <div class="offer-card">
+            <div class="offer-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+            <h3>Connect with Readers</h3>
+            <p>Meet fellow book enthusiasts and build lasting connections.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+      <div class="container cta-container">
+        <h2>Ready to Start Bartering?</h2>
+        <p>Join our community today and discover the joy of sharing books with fellow readers.</p>
+        <div class="cta-buttons">
+          <a href="#" class="btn btn-white btn-lg">Sign Up Now</a>
+          <a href="#" class="btn btn-outline btn-lg">Learn More</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <h3>Book Barter</h3>
+          <p>Connecting readers and sharing stories since 2023.</p>
+        </div>
+        <div class="footer-column">
+          <h4>Categories</h4>
+          <ul class="footer-links">
+            <li><a href="/books?genre=Mystery">Mystery</a></li>
+            <li><a href="/books?genre=Fiction">Fiction</a></li>
+            <li><a href="/books?genre=Crime">Crime</a></li>
+            <li><a href="/books">View All</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Contact Us</h4>
+          <ul class="footer-contact">
+            <li>Email: info@bookbarter.com</li>
+            <li>Phone: (123) 456-7890</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Book Barter System. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

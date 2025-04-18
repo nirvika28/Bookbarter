@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookSwap - Exchange Proposals</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --secondary: #f43f5e;
+      --secondary-hover: #e11d48;
+      --success: #10b981;
+      --success-hover: #059669;
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --text-dark: #1f2937;
+      --text-light: #6b7280;
+      --bg-light: #f9fafb;
+      --bg-white: #ffffff;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --radius: 8px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header & Navigation */
+    header {
+      background-color: var(--bg-white);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .user-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    /* Main Content */
+    main {
+      padding: 2rem 0;
+    }
+
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .card {
+      background-color: var(--bg-white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Proposals */
+    .proposals-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .proposal-card {
+      background-color: var(--bg-white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      border-left: 4px solid #d1d5db;
+    }
+
+    .proposal-card.pending {
+      border-left-color: #f59e0b;
+    }
+
+    .proposal-card.accepted {
+      border-left-color: var(--success);
+    }
+
+    .proposal-card.rejected {
+      border-left-color: var(--danger);
+    }
+
+    .proposal-card.completed {
+      border-left-color: var(--primary);
+    }
+
+    .proposal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .status-badge.pending {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-badge.accepted {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-badge.rejected {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .status-badge.completed {
+      background-color: #e0e7ff;
+      color: #4338ca;
+    }
+
+    .proposal-date {
+      color: var(--text-light);
+      font-size: 0.875rem;
+    }
+
+    .exchange-details {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .book-card {
+      flex: 1;
+      background-color: var(--bg-light);
+      padding: 1rem;
+      border-radius: var(--radius);
+    }
+
+    .book-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .book-author {
+      color: var(--text-light);
+      font-size: 0.875rem;
+    }
+
+    .book-owner {
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--text-light);
+    }
+
+    .exchange-arrow {
+      font-size: 1.5rem;
+      color: var(--text-light);
+    }
+
+    .proposal-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--radius);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-success {
+      background-color: var(--success);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: var(--success-hover);
+    }
+
+    .btn-danger {
+      background-color: var(--danger);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: var(--danger-hover);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid #d1d5db;
+      color: var(--text-dark);
+    }
+
+    .btn-outline:hover {
+      background-color: #f3f4f6;
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    /* Utilities */
+    .text-center {
+      text-align: center;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-light);
+    }
+
+    .error-message {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+
+    .success-message {
+      background-color: #d1fae5;
+      color: #065f46;
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+    .proposal-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 32px 0 48px 0;
+}
+
+.proposal-inputs {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.proposal-inputs input[type="number"] {
+  padding: 12px 18px;
+  border: 2px solid #4a90e2;
+  border-radius: 24px;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+  background: #f7faff;
+  color: #222;
+  box-shadow: 0 2px 8px rgba(74,144,226,0.08);
+}
+
+.proposal-inputs input[type="number"]:focus {
+  border-color: #357ab8;
+  box-shadow: 0 4px 16px rgba(74,144,226,0.12);
+}
+
+    .send-proposal-btn {
+     display: inline-flex;
+     align-items: center;
+     padding: 26px 36px;
+     font-size: 1.15rem;
+     font-weight: 600;
+     color: #fff;
+     background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+     border: none;
+     border-radius: 14px;
+     box-shadow: 0 4px 16px rgba(24, 90, 157, 0.10);
+     cursor: pointer;
+     transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+     margin: 18px 10px 8px 650px;
+     letter-spacing: 0.5px;
+}
+
+    .send-proposal-btn:hover, .send-proposal-btn:focus {
+     background: linear-gradient(90deg, #185a9d 0%, #43cea2 100%);
+     transform: translateY(-2px) scale(1.04);
+     box-shadow: 0 8px 24px rgba(24, 90, 157, 0.18);
+     outline: none;
+}
+
+    .num1{
+       margin: 1px 500px;
+       border-radius: 18px;
+       gap:0.5 rem;
+   }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .exchange-details {
+        flex-direction: column;
+      }
+      
+      .exchange-arrow {
+        transform: rotate(90deg);
+        margin: 0.5rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="dash.html" class="logo">BookSwap</a>
+        <ul class="nav-links">
+          <li><a href="dash.html">Dashboard</a></li>
+          <li><a href="exchange.html" class="active">Exchange Proposals</a></li>
+          <li><a href="dash.html">My Books</a></li>
+          <li><a href="dash.html">Browse</a></li>
+        </ul>
+        <div class="user-actions">
+          <button class="btn btn-outline btn-sm" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="page-title">Exchange Proposals</h1>
+    <div id="status-message"></div>
+
+    <div class="card">
+      <div id="proposals-container" class="proposals-list">
+        <div class="loading">Loading exchange proposals...</div>
+      </div>
+    </div>
+  </main>
+</main>
+<div class="proposal-form">
+  <div class="proposal-inputs">
+    <input type="number" id="receiverIdInput" placeholder="Receiver User ID">
+    <input type="number" id="senderBookIdInput" placeholder="Your Book ID">
+    <input type="number" id="receiverBookIdInput" placeholder="Their Book ID">
+  </div>
+  <button class="send-proposal-btn" onclick="addProposal()">
+    <span style="font-size:1.2em; margin-right:8px;">📬</span>
+    Send Proposal
+  </button>
+</div>
+
+  <script>
+  function addProposal() {
+  // Get JWT token from localStorage
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert('You must be logged in to send a proposal.');
+    return;
+  }
+
+  // Get the current user's ID (set this in your app after login)
+  localStorage.setItem("userId", user.id);
+
+  const sender_id = localStorage.getItem("userId");
+  if (!sender_id) {
+    alert('Could not determine your user ID. Please log in again.');
+    return;
+  }
+
+  // Get input elements
+  const receiverInput = document.getElementById('receiverIdInput');
+  const senderBookInput = document.getElementById('senderBookIdInput');
+  const receiverBookInput = document.getElementById('receiverBookIdInput');
+
+  // Check if all input fields exist
+  if (!receiverInput || !senderBookInput || !receiverBookInput) {
+    alert('One or more input fields are missing in the HTML!');
+    return;
+  }
+
+  // Get values and validate
+  const receiver_id = receiverInput.value.trim();
+  const sender_book_id = senderBookInput.value.trim();
+  const receiver_book_id = receiverBookInput.value.trim();
+
+  if (!receiver_id || !sender_book_id || !receiver_book_id) {
+    alert('Please fill in all fields.');
+    return;
+  }
+
+  // Prepare the request payload
+  const payload = {
+    
+    
+  receiverId: receiver_id,
+  senderBookId: sender_book_id,
+  receiverBookId: receiver_book_id
+};
+
+  
+  // Send the proposal
+  fetch('/api/exchange-proposals', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert('Proposal sent!');
+      // Optionally, clear fields or refresh proposals list here
+    } else {
+      alert('Failed to send proposal: ' + (data.message || 'Unknown error'));
+    }
+  })
+  .catch(err => {
+    alert('Error sending proposal: ' + err.message);
+  });
+}
+
+  </script>
+  
+  
+  <script>
+    // DOM Elements
+    const proposalsContainer = document.getElementById('proposals-container');
+    const statusMessage = document.getElementById('status-message');
+
+    // Authentication Check
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const userId = user.user_id;
+    const userEmail = user.email;
+
+    console.log('Auth status:', { 
+      hasToken: !!token, 
+      hasEmail: !!userEmail,
+      userId: userId 
+    });
+
+  
+      fetchExchangeProposals();
+    
+
+    // Helper function to show status messages
+    function showMessage(message, type = 'success') {
+      statusMessage.innerHTML = `<div class="${type}-message">${message}</div>`;
+      setTimeout(() => {
+        statusMessage.innerHTML = '';
+      }, 5000);
+    }
+
+    // Format date
+    function formatDate(dateString) {
+      const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+      return new Date(dateString).toLocaleDateString(undefined, options);
+    }
+
+    // Fetch exchange proposals
+    function fetchExchangeProposals() {
+      proposalsContainer.innerHTML = '<div class="loading">Loading exchange proposals...</div>';
+      
+      // Before:
+
+// After:
+     fetch(`/api/exchange-proposals/user`, {
+  headers: {
+    'Authorization': `Bearer ${token}`
+         }
+  })
+
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          if (data.proposals.length > 0) {
+            proposalsContainer.innerHTML = '';
+            
+            data.proposals.forEach(proposal => {
+              const isReceiver = proposal.receiver_id == userId;
+              const isPending = proposal.status === 'pending';
+              const isAccepted = proposal.status === 'accepted';
+              
+              const proposalElement = document.createElement('div');
+              proposalElement.className = `proposal-card ${proposal.status}`;
+              proposalElement.innerHTML = `
+                <div class="proposal-header">
+                  <span class="status-badge ${proposal.status}">${proposal.status.charAt(0).toUpperCase() + proposal.status.slice(1)}</span>
+                  <span class="proposal-date">${formatDate(proposal.created_at)}</span>
+                </div>
+                
+                <div class="exchange-details">
+                  <div class="book-card">
+                    <div class="book-title">${proposal.sender_book_title}</div>
+                    <div class="book-author">by ${proposal.sender_book_author || 'Unknown'}</div>
+                    <div class="book-owner">Owner: ${proposal.sender_id == userId ? 'You' : proposal.sender_name}</div>
+                  </div>
+                  
+                  <div class="exchange-arrow">
+                    <i class="fas fa-exchange-alt"></i>
+                  </div>
+                  
+                  <div class="book-card">
+                    <div class="book-title">${proposal.receiver_book_title}</div>
+                    <div class="book-author">by ${proposal.receiver_book_author || 'Unknown'}</div>
+                    <div class="book-owner">Owner: ${proposal.receiver_id == userId ? 'You' : proposal.receiver_name}</div>
+                  </div>
+                </div>
+                
+                ${isReceiver && isPending ? `
+                  <div class="proposal-actions">
+                    <button class="btn btn-success btn-sm" onclick="updateProposalStatus(${proposal.proposal_id}, 'accepted')">
+                      <i class="fas fa-check"></i> Accept
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="updateProposalStatus(${proposal.proposal_id}, 'rejected')">
+                      <i class="fas fa-times"></i> Reject
+                    </button>
+                  </div>
+                ` : ''}
+                
+                ${isAccepted ? `
+                  <div class="proposal-actions">
+                    <button class="btn btn-primary btn-sm" onclick="updateProposalStatus(${proposal.proposal_id}, 'completed')">
+                      <i class="fas fa-check-double"></i> Mark as Completed
+                    </button>
+                  </div>
+                ` : ''}
+              `;
+              
+              proposalsContainer.appendChild(proposalElement);
+            });
+          } else {
+            proposalsContainer.innerHTML = '<div class="text-center">No exchange proposals yet.</div>';
+          }
+        } else {
+          proposalsContainer.innerHTML = '<div class="text-center">Failed to load exchange proposals.</div>';
+          showMessage(data.message || 'Failed to load proposals', 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching proposals:', error);
+        proposalsContainer.innerHTML = '<div class="text-center">Failed to load proposals. Please try again.</div>';
+        showMessage('Network error. Please try again.', 'error');
+      });
+    }
+
+    function updateProposalStatus(proposalId, status) {
+  fetch(`/api/exchange-proposals/${proposalId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ status })
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    if (data.success) {
+      showMessage(`Proposal ${status} successfully`);
+      fetchExchangeProposals(); // Refresh the list
+    } else {
+      showMessage(data.message || `Failed to update proposal status`, 'error');
+    }
+  })
+  .catch(error => {
+    console.error('Error updating proposal:', error);
+    showMessage('Network error. Please try again.', 'error');
+  });
+}
+
+    // Logout function
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>
